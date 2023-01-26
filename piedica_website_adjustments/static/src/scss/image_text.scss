@@ -1,0 +1,9 @@
+section[data-snippet="s_image_text"] {
+    > div.container {
+        > div {
+            @include media-breakpoint-down(md) {
+                flex-direction: column-reverse;
+            }
+        }
+    }
+}

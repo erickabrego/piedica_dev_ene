@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template inherit_id="website_calendar.appointment_form" id="custom_appointment_calendar_view" priority="200">
+        <xpath expr="//form[hasclass('appointment_submit_form')]/div[4]" position="after">
+            <div class="form-group row col-xl-8">
+                <label class="col-md-4 col-form-label" for="x_studio_servicios_1">Servicio</label>
+                <div class="col-md-8">
+                    <select id="x_studio_servicios_1" t-attf-name="x_studio_servicios_1" t-attf-class="form-control">
+                        <option value="">...</option>
+                        <t t-foreach="servicios or {}" t-as="servicio">
+                            <t t-if="servicio != 'Consulta en línea'">
+                                <option t-att-value="servicio"
+                                        t-att-selected="'selected' if servicio == x_studio_servicios_1 else None">
+                                    <t t-esc="servicios[servicio]"/>
+                                </option>
+                            </t>
+                        </t>
+                    </select>
+                </div>
+
+                <label class="col-md-4 col-form-label" for="is_paciente">¿Paciente o medico?</label>
+                <div class="col-md-8">
+                    <select id="is_paciente" t-attf-name="is_paciente" t-attf-class="form-control">
+                        <option value="">...</option>
+                        <option t-att-value="'paciente'" t-att-selected="'selected' if paciente else None">Paciente</option>
+                        <option t-att-value="'medico'" t-att-selected="'selected' if medico else None">Médico</option>
+                    </select>
+                </div>
+
+            </div>
+        </xpath>
+    </template>
+
+    <template id="p_email_error" name="Website Appointment: Email Error">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_website_calendar mt-4">
+                <div class="oe_structure">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    <h2>El correo que ingresaste ya está registrado.</h2>
+                                    <p>
+                                        <a t-attf-href="/web/login?redirect={{ quote_plus(return_url) }}&amp;login={{ quote_plus(email) }}">inicia sesión</a> para poder continuar con la cita.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="appointment_validated" inherit_id="website_calendar.appointment_validated">
+        <xpath expr="//div[hasclass('oe_structure')]/div[@role='status']" position="inside">
+            <p t-if="partner_invite_email" style="font-size: 1rem">
+                Te hemos enviado una invitación a <i t-esc="partner_invite_email"/> para que puedas ingresar a tu portal de Piédica.
+            </p>
+        </xpath>
+    </template>
+</odoo>
